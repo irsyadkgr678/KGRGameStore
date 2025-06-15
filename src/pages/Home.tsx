@@ -1,0 +1,206 @@
+import React, { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
+import { GameCard } from '../components/GameCard'
+import { GameFilters } from '../components/GameFilters'
+import { Loader2, Gamepad2, Sparkles, Filter, ChevronDown, ChevronUp } from 'lucide-react'
+
+interface Game {
+  id: string
+  title: string
+  description: string
+  price: number
+  discount_percentage: number | null
+  discount_amount: number | null
+  is_free: boolean
+  genre: string
+  image_url: string | null
+  created_at: string
+  updated_at: string
+}
+
+export const Home: React.FC = () => {
+  const [games, setGames] = useState<Game[]>([])
+  const [filteredGames, setFilteredGames] = useState<Game[]>([])
+  const [loading, setLoading] = useState(true)
+  const [showFilters, setShowFilters] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedGenre, setSelectedGenre] = useState('')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000])
+
+  const genres = [...new Set(games.map(game => game.genre))].sort()
+  const maxPrice = Math.max(...games.map(game => game.price), 1000000)
+
+  useEffect(() => {
+    fetchGames()
+  }, [])
+
+  useEffect(() => {
+    filterAndSortGames()
+  }, [games, searchTerm, selectedGenre, sortOrder, priceRange])
+
+  const fetchGames = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('games')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+      setGames(data || [])
+    } catch (error) {
+      console.error('Error fetching games:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const filterAndSortGames = () => {
+    let filtered = [...games]
+
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(game =>
+        game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        game.description.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    }
+
+    // Genre filter
+    if (selectedGenre) {
+      filtered = filtered.filter(game => game.genre === selectedGenre)
+    }
+
+    // Price filter
+    filtered = filtered.filter(game => {
+      if (game.is_free) return true
+      
+      let finalPrice = game.price
+      if (game.discount_percentage) {
+        finalPrice = game.price * (1 - game.discount_percentage / 100)
+      } else if (game.discount_amount) {
+        finalPrice = Math.max(0, game.price - game.discount_amount)
+      }
+      
+      return finalPrice <= priceRange[1]
+    })
+
+    // Sort
+    filtered.sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a.title.localeCompare(b.title)
+      } else {
+        return b.title.localeCompare(a.title)
+      }
+    })
+
+    setFilteredGames(filtered)
+  }
+
+  const hasActiveFilters = searchTerm || selectedGenre || priceRange[1] < maxPrice
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-purple-500 animate-spin mx-auto mb-4" />
+          <p className="text-gray-400">Loading games...</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Hero Section */}
+      <div className="text-center mb-12">
+        <div className="flex items-center justify-center mb-4">
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full mr-4">
+            <Gamepad2 className="w-8 h-8 text-white" />
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            KGR GameStore
+          </h1>
+        </div>
+        <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          Discover amazing games at incredible prices. From indie gems to AAA blockbusters, 
+          find your next gaming adventure here.
+        </p>
+      </div>
+
+      {/* Filter Toggle Button */}
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center space-x-4">
+          <h2 className="text-2xl font-semibold text-white">
+            Browse Games {filteredGames.length !== games.length && `(${filteredGames.length})`}
+          </h2>
+          {hasActiveFilters && (
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-600/20 text-purple-300 border border-purple-500/30">
+              Filters Active
+            </span>
+          )}
+        </div>
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-lg font-medium text-gray-300 hover:text-white transition-all duration-200 border border-gray-700/50 hover:border-purple-500/50"
+        >
+          <Filter className="w-4 h-4" />
+          <span>{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
+          {showFilters ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        </button>
+      </div>
+
+      {/* Collapsible Filters */}
+      {showFilters && (
+        <div className="mb-8 animate-in slide-in-from-top-2 duration-300">
+          <GameFilters
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            selectedGenre={selectedGenre}
+            setSelectedGenre={setSelectedGenre}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            genres={genres}
+            maxPrice={maxPrice}
+          />
+        </div>
+      )}
+
+      {/* Games Grid */}
+      {filteredGames.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredGames.map((game) => (
+            <GameCard key={game.id} game={game} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-16">
+          <div className="mb-4">
+            <Sparkles className="w-16 h-16 text-gray-600 mx-auto" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-400 mb-2">No games found</h3>
+          <p className="text-gray-500 mb-4">
+            {games.length === 0 
+              ? "No games available yet. Check back soon!" 
+              : "Try adjusting your filters to find more games."
+            }
+          </p>
+          {hasActiveFilters && (
+            <button
+              onClick={() => {
+                setSearchTerm('')
+                setSelectedGenre('')
+                setPriceRange([0, maxPrice])
+              }}
+              className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium text-white transition-colors duration-200"
+            >
+              Clear All Filters
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
