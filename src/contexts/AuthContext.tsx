@@ -19,7 +19,6 @@ interface AuthContextType {
   signUp: (email: string, password: string, fullName: string) => Promise<any>
   signIn: (email: string, password: string) => Promise<any>
   signOut: () => Promise<void>
-  resetPassword: (email: string) => Promise<any>
   isAdmin: boolean
 }
 
@@ -45,37 +44,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSession(session)
       setUser(session?.user ?? null)
       if (session?.user) {
-        // Check if email is confirmed
-        if (session.user.email_confirmed_at) {
-          fetchProfile(session.user.id)
-        } else {
-          // Email not confirmed, sign out
-          supabase.auth.signOut()
-          setLoading(false)
-        }
+        fetchProfile(session.user.id)
       } else {
         setLoading(false)
       }
     })
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth event:', event, session?.user?.email_confirmed_at)
-      
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       setUser(session?.user ?? null)
-      
       if (session?.user) {
-        // Check if email is confirmed
-        if (session.user.email_confirmed_at) {
-          fetchProfile(session.user.id)
-        } else {
-          // Email not confirmed, sign out immediately
-          console.log('Email not confirmed, signing out')
-          await supabase.auth.signOut()
-          setProfile(null)
-          setLoading(false)
-        }
+        fetchProfile(session.user.id)
       } else {
         setProfile(null)
         setLoading(false)
@@ -93,15 +73,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .eq('id', userId)
         .single()
 
-      if (error) {
-        console.log('Profile not found, user might need to confirm email')
-        setProfile(null)
-      } else {
-        setProfile(data)
-      }
+      if (error) throw error
+      setProfile(data)
     } catch (error) {
       console.error('Error fetching profile:', error)
-      setProfile(null)
     } finally {
       setLoading(false)
     }
@@ -112,7 +87,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/login?confirmed=true`,
+        emailRedirectTo: undefined, // Disable email confirmation
         data: {
           full_name: fullName,
         },
@@ -126,29 +101,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email,
       password,
     })
-    
-    // Check if email is confirmed
-    if (data.user && !data.user.email_confirmed_at) {
-      // Sign out immediately if email not confirmed
-      await supabase.auth.signOut()
-      return { 
-        data: null, 
-        error: { message: 'Email not confirmed. Please check your email and click the confirmation link.' }
-      }
-    }
-    
     return { data, error }
   }
 
   const signOut = async () => {
     await supabase.auth.signOut()
-  }
-
-  const resetPassword = async (email: string) => {
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    })
-    return { data, error }
   }
 
   const value = {
@@ -159,7 +116,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signUp,
     signIn,
     signOut,
-    resetPassword,
     isAdmin: profile?.is_admin ?? false,
   }
 
