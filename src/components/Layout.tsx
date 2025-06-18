@@ -10,7 +10,8 @@ import {
   LogOut, 
   Menu, 
   X,
-  ShoppingCart
+  ShoppingCart,
+  Gamepad2
 } from 'lucide-react'
 
 interface LayoutProps {
@@ -49,11 +50,20 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="flex justify-between items-center h-14 sm:h-16">
             <div className="flex items-center space-x-2 sm:space-x-8">
               <Link to="/" className="flex items-center space-x-1 sm:space-x-2 group">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-200">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-200 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
                   <img 
-                    src="/kgr logo copy.png" 
+                    src="/image copy.png" 
                     alt="KGR GameStore Logo" 
                     className="w-full h-full object-contain"
+                    onError={(e) => {
+                      // Fallback to icon if image fails to load
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const parent = target.parentElement;
+                      if (parent) {
+                        parent.innerHTML = '<svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>';
+                      }
+                    }}
                   />
                 </div>
                 <span className="text-sm sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
