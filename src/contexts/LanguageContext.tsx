@@ -46,6 +46,7 @@ const translations = {
     'home.selectPreferredContact': 'Pilih cara yang Anda inginkan untuk menghubungi kami:',
     'home.whatsappDescription': 'Chat langsung untuk respon cepat',
     'home.instagramDescription': 'Kirim pesan melalui DM Instagram',
+    'home.needHelp': 'Butuh Bantuan?',
     
     // Game filters
     'filters.searchGames': 'Cari Game',
@@ -253,6 +254,7 @@ const translations = {
     'home.selectPreferredContact': 'Select your preferred way to contact us:',
     'home.whatsappDescription': 'Direct chat for quick response',
     'home.instagramDescription': 'Send message via Instagram DM',
+    'home.needHelp': 'Need Help?',
     
     // Game filters
     'filters.searchGames': 'Search Games',
