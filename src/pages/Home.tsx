@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 import { useLanguage } from '../contexts/LanguageContext'
 import { GameCard } from '../components/GameCard'
 import { GameFilters } from '../components/GameFilters'
-import { Loader2, Gamepad2, Sparkles, Filter, ChevronDown, ChevronUp, MessageCircle, ExternalLink } from 'lucide-react'
+import { Loader2, Gamepad2, Sparkles, Filter, ChevronDown, ChevronUp, MessageCircle, ExternalLink, X } from 'lucide-react'
 
 interface Game {
   id: string
@@ -26,6 +26,7 @@ export const Home: React.FC = () => {
   const [filteredGames, setFilteredGames] = useState<Game[]>([])
   const [loading, setLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
+  const [showComplaintModal, setShowComplaintModal] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedGenre, setSelectedGenre] = useState('')
   const [selectedPlatform, setSelectedPlatform] = useState('')
@@ -109,18 +110,17 @@ export const Home: React.FC = () => {
     setFilteredGames(filtered)
   }
 
-  const handleComplaint = () => {
+  const handleWhatsAppComplaint = () => {
     const message = encodeURIComponent(
       `Halo KGR GameStore! Saya ingin menyampaikan keluhan/masalah terkait layanan atau pesanan saya. Mohon bantuan untuk menyelesaikan masalah ini. Terima kasih.`
     )
-    
-    // Open WhatsApp
     window.open(`https://wa.me/6208972190700?text=${message}`, '_blank')
-    
-    // Also open Instagram after a short delay
-    setTimeout(() => {
-      window.open('https://www.instagram.com/irsyad.kgr/', '_blank')
-    }, 1000)
+    setShowComplaintModal(false)
+  }
+
+  const handleInstagramComplaint = () => {
+    window.open('https://www.instagram.com/irsyad.kgr/', '_blank')
+    setShowComplaintModal(false)
   }
 
   const hasActiveFilters = searchTerm || selectedGenre || selectedPlatform || priceRange[1] < maxPrice
@@ -138,6 +138,80 @@ export const Home: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
+      {/* Complaint/Report Button - Moved to Top */}
+      <div className="mb-6 sm:mb-8">
+        <div className="flex justify-center">
+          <button
+            onClick={() => setShowComplaintModal(true)}
+            className="group relative inline-flex items-center space-x-2 sm:space-x-3 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 rounded-lg font-semibold text-white transition-all duration-200 hover:shadow-lg hover:shadow-red-500/25 text-sm sm:text-base"
+          >
+            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span>{t('home.complaint')}</span>
+            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 opacity-70 group-hover:opacity-100 transition-opacity duration-200" />
+          </button>
+        </div>
+        <p className="text-xs sm:text-sm text-gray-400 mt-2 sm:mt-3 text-center max-w-md mx-auto px-2">
+          {t('home.complaintDescription')}
+        </p>
+      </div>
+
+      {/* Complaint Modal */}
+      {showComplaintModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md border border-gray-700/50">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold text-white">
+                {t('home.chooseContactMethod')}
+              </h3>
+              <button
+                onClick={() => setShowComplaintModal(false)}
+                className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-gray-300 text-sm mb-6">
+                {t('home.selectPreferredContact')}
+              </p>
+
+              {/* WhatsApp Option */}
+              <button
+                onClick={handleWhatsAppComplaint}
+                className="w-full flex items-center space-x-4 p-4 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 rounded-lg transition-all duration-200 group"
+              >
+                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                  <MessageCircle className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <div className="font-semibold text-white">WhatsApp</div>
+                  <div className="text-sm text-gray-300">{t('home.whatsappDescription')}</div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-green-400 ml-auto" />
+              </button>
+
+              {/* Instagram Option */}
+              <button
+                onClick={handleInstagramComplaint}
+                className="w-full flex items-center space-x-4 p-4 bg-pink-600/20 hover:bg-pink-600/30 border border-pink-500/30 rounded-lg transition-all duration-200 group"
+              >
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </div>
+                <div className="text-left">
+                  <div className="font-semibold text-white">Instagram</div>
+                  <div className="text-sm text-gray-300">{t('home.instagramDescription')}</div>
+                </div>
+                <ExternalLink className="w-4 h-4 text-pink-400 ml-auto" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <div className="text-center mb-8 sm:mb-12">
         <div className="flex items-center justify-center mb-3 sm:mb-4">
@@ -151,21 +225,6 @@ export const Home: React.FC = () => {
         <p className="text-sm sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
           {t('home.subtitle')}
         </p>
-
-        {/* Complaint/Report Button */}
-        <div className="mb-6 sm:mb-8">
-          <button
-            onClick={handleComplaint}
-            className="group relative inline-flex items-center space-x-2 sm:space-x-3 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 rounded-lg font-semibold text-white transition-all duration-200 hover:shadow-lg hover:shadow-red-500/25 text-sm sm:text-base"
-          >
-            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span>{t('home.complaint')}</span>
-            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 opacity-70 group-hover:opacity-100 transition-opacity duration-200" />
-          </button>
-          <p className="text-xs sm:text-sm text-gray-400 mt-2 sm:mt-3 max-w-md mx-auto px-2">
-            {t('home.complaintDescription')}
-          </p>
-        </div>
       </div>
 
       {/* Filter Toggle Button */}

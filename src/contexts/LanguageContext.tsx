@@ -42,6 +42,10 @@ const translations = {
     'home.clearAllFilters': 'Hapus Semua Filter',
     'home.complaint': 'Komplain',
     'home.complaintDescription': 'Ada masalah dengan pesanan atau layanan kami? Hubungi kami langsung melalui WhatsApp atau Instagram untuk mendapatkan bantuan cepat dan solusi terbaik.',
+    'home.chooseContactMethod': 'Pilih Metode Kontak',
+    'home.selectPreferredContact': 'Pilih cara yang Anda inginkan untuk menghubungi kami:',
+    'home.whatsappDescription': 'Chat langsung untuk respon cepat',
+    'home.instagramDescription': 'Kirim pesan melalui DM Instagram',
     
     // Game filters
     'filters.searchGames': 'Cari Game',
@@ -245,6 +249,10 @@ const translations = {
     'home.clearAllFilters': 'Clear All Filters',
     'home.complaint': 'Report',
     'home.complaintDescription': 'Having issues with your order or our service? Contact us directly via WhatsApp or Instagram for quick assistance and the best solutions.',
+    'home.chooseContactMethod': 'Choose Contact Method',
+    'home.selectPreferredContact': 'Select your preferred way to contact us:',
+    'home.whatsappDescription': 'Direct chat for quick response',
+    'home.instagramDescription': 'Send message via Instagram DM',
     
     // Game filters
     'filters.searchGames': 'Search Games',
