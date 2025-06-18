@@ -51,7 +51,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link to="/" className="flex items-center space-x-1 sm:space-x-2 group">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-200">
                   <img 
-                    src="/kgr logo.png" 
+                    src="/kgr logo copy.png" 
                     alt="KGR GameStore Logo" 
                     className="w-full h-full object-contain"
                   />
