@@ -49,18 +49,18 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center px-3 sm:px-4 lg:px-8">
+      <div className="max-w-md w-full space-y-6 sm:space-y-8">
         <div className="text-center">
-          <div className="flex items-center justify-center mb-6">
-            <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full">
-              <Gamepad2 className="w-8 h-8 text-white" />
+          <div className="flex items-center justify-center mb-4 sm:mb-6">
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 sm:p-3 rounded-full">
+              <Gamepad2 className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
             </div>
           </div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
             {mode === 'login' ? t('auth.welcomeBack') : t('auth.joinKGR')}
           </h2>
-          <p className="mt-2 text-gray-400">
+          <p className="mt-2 text-gray-400 text-sm sm:text-base">
             {mode === 'login' 
               ? t('auth.signInToContinue')
               : t('auth.joinCommunity')
@@ -68,12 +68,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
           </p>
         </div>
 
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700/50">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-700/50">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {mode === 'register' && (
               <div>
-                <label htmlFor="fullName" className="block text-sm font-medium text-gray-300 mb-2">
-                  <User className="w-4 h-4 inline mr-2" />
+                <label htmlFor="fullName" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
+                  <User className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1 sm:mr-2" />
                   {t('auth.fullName')}
                 </label>
                 <input
@@ -82,15 +82,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
                   placeholder={t('auth.enterFullName')}
                 />
               </div>
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                <Mail className="w-4 h-4 inline mr-2" />
+              <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
+                <Mail className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1 sm:mr-2" />
                 {t('auth.emailAddress')}
               </label>
               <input
@@ -99,14 +99,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
                 placeholder={t('auth.enterEmail')}
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                <Lock className="w-4 h-4 inline mr-2" />
+              <label htmlFor="password" className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
+                <Lock className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1 sm:mr-2" />
                 {t('auth.password')}
               </label>
               <div className="relative">
@@ -116,36 +116,36 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 pr-12"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 pr-10 sm:pr-12 text-sm sm:text-base"
                   placeholder={t('auth.enterPassword')}
                   minLength={6}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors duration-200"
+                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors duration-200"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
                 </button>
               </div>
             </div>
 
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
-                <p className="text-red-400 text-sm">{error}</p>
+                <p className="text-red-400 text-xs sm:text-sm">{error}</p>
               </div>
             )}
 
             {success && (
               <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3">
-                <p className="text-green-400 text-sm">{success}</p>
+                <p className="text-green-400 text-xs sm:text-sm">{success}</p>
               </div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-600 disabled:to-gray-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2"
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-600 disabled:to-gray-600 text-white font-semibold py-2.5 sm:py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 text-sm sm:text-base"
             >
               {loading ? (
                 <>
@@ -158,9 +158,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-400">
-              {mode === 'login' ? t('auth.dontHaveAccount') : t('auth.alreadyHaveAccount')}
+          <div className="mt-4 sm:mt-6 text-center">
+            <p className="text-gray-400 text-xs sm:text-sm">
+              {mode === 'login' ? t('auth.dontHaveAccount') : t('auth.alreadyHaveAccount')}{' '}
               <Link
                 to={mode === 'login' ? '/register' : '/login'}
                 className="text-purple-400 hover:text-purple-300 font-medium transition-colors duration-200"
