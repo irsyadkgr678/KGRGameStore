@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 import { useLanguage } from '../contexts/LanguageContext'
 import { GameCard } from '../components/GameCard'
 import { GameFilters } from '../components/GameFilters'
-import { Loader2, Gamepad2, Sparkles, Filter, ChevronDown, ChevronUp } from 'lucide-react'
+import { Loader2, Gamepad2, Sparkles, Filter, ChevronDown, ChevronUp, MessageCircle, ExternalLink } from 'lucide-react'
 
 interface Game {
   id: string
@@ -109,6 +109,20 @@ export const Home: React.FC = () => {
     setFilteredGames(filtered)
   }
 
+  const handleComplaint = () => {
+    const message = encodeURIComponent(
+      `Halo KGR GameStore! Saya ingin menyampaikan keluhan/masalah terkait layanan atau pesanan saya. Mohon bantuan untuk menyelesaikan masalah ini. Terima kasih.`
+    )
+    
+    // Open WhatsApp
+    window.open(`https://wa.me/6208972190700?text=${message}`, '_blank')
+    
+    // Also open Instagram after a short delay
+    setTimeout(() => {
+      window.open('https://www.instagram.com/irsyad.kgr/', '_blank')
+    }, 1000)
+  }
+
   const hasActiveFilters = searchTerm || selectedGenre || selectedPlatform || priceRange[1] < maxPrice
 
   if (loading) {
@@ -137,6 +151,21 @@ export const Home: React.FC = () => {
         <p className="text-sm sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
           {t('home.subtitle')}
         </p>
+
+        {/* Complaint/Report Button */}
+        <div className="mb-6 sm:mb-8">
+          <button
+            onClick={handleComplaint}
+            className="group relative inline-flex items-center space-x-2 sm:space-x-3 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 rounded-lg font-semibold text-white transition-all duration-200 hover:shadow-lg hover:shadow-red-500/25 text-sm sm:text-base"
+          >
+            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span>{t('home.complaint')}</span>
+            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 opacity-70 group-hover:opacity-100 transition-opacity duration-200" />
+          </button>
+          <p className="text-xs sm:text-sm text-gray-400 mt-2 sm:mt-3 max-w-md mx-auto px-2">
+            {t('home.complaintDescription')}
+          </p>
+        </div>
       </div>
 
       {/* Filter Toggle Button */}

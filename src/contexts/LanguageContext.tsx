@@ -40,6 +40,8 @@ const translations = {
     'home.noGamesAvailable': 'Belum ada game tersedia. Periksa kembali nanti!',
     'home.adjustFilters': 'Coba sesuaikan filter Anda untuk menemukan lebih banyak game.',
     'home.clearAllFilters': 'Hapus Semua Filter',
+    'home.complaint': 'Komplain',
+    'home.complaintDescription': 'Ada masalah dengan pesanan atau layanan kami? Hubungi kami langsung melalui WhatsApp atau Instagram untuk mendapatkan bantuan cepat dan solusi terbaik.',
     
     // Game filters
     'filters.searchGames': 'Cari Game',
@@ -241,6 +243,8 @@ const translations = {
     'home.noGamesAvailable': 'No games available yet. Check back soon!',
     'home.adjustFilters': 'Try adjusting your filters to find more games.',
     'home.clearAllFilters': 'Clear All Filters',
+    'home.complaint': 'Report',
+    'home.complaintDescription': 'Having issues with your order or our service? Contact us directly via WhatsApp or Instagram for quick assistance and the best solutions.',
     
     // Game filters
     'filters.searchGames': 'Search Games',
