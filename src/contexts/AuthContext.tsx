@@ -45,26 +45,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSession(session)
       setUser(session?.user ?? null)
       if (session?.user) {
-        fetchProfile(session.user.id)
+        // Check if email is confirmed
+        if (session.user.email_confirmed_at) {
+          fetchProfile(session.user.id)
+        } else {
+          // Email not confirmed, sign out
+          supabase.auth.signOut()
+          setLoading(false)
+        }
       } else {
         setLoading(false)
       }
     })
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth event:', event, session?.user?.email_confirmed_at)
+      
       setSession(session)
       setUser(session?.user ?? null)
+      
       if (session?.user) {
         // Check if email is confirmed
-        if (!session.user.email_confirmed_at) {
-          // Email not confirmed, sign out
+        if (session.user.email_confirmed_at) {
+          fetchProfile(session.user.id)
+        } else {
+          // Email not confirmed, sign out immediately
+          console.log('Email not confirmed, signing out')
           await supabase.auth.signOut()
           setProfile(null)
           setLoading(false)
-          return
         }
-        fetchProfile(session.user.id)
       } else {
         setProfile(null)
         setLoading(false)
@@ -83,8 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .single()
 
       if (error) {
-        // If profile doesn't exist, it might be because email isn't confirmed yet
-        console.log('Profile not found, might need email confirmation')
+        console.log('Profile not found, user might need to confirm email')
         setProfile(null)
       } else {
         setProfile(data)

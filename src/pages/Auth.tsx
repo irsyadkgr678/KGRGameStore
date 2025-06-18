@@ -44,10 +44,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
         const { error } = await signUp(email, password, fullName)
         if (error) throw error
         setSuccess(t('auth.checkEmailConfirmation'))
+        // Clear form after successful registration
+        setEmail('')
+        setPassword('')
+        setFullName('')
       } else {
         const { error } = await signIn(email, password)
         if (error) {
-          if (error.message.includes('Email not confirmed')) {
+          if (error.message.includes('Email not confirmed') || error.message.includes('email not confirmed')) {
             throw new Error(t('auth.emailNotConfirmed'))
           }
           throw error
