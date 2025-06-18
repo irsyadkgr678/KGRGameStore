@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { useLanguage } from '../contexts/LanguageContext'
 import { Calendar, User, Eye, Info, Search } from 'lucide-react'
 
 interface BlogPost {
@@ -16,6 +17,7 @@ interface BlogPost {
 }
 
 export const Blog: React.FC = () => {
+  const { t } = useLanguage()
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -72,7 +74,7 @@ export const Blog: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <Info className="w-12 h-12 text-purple-500 animate-pulse mx-auto mb-4" />
-          <p className="text-gray-400">Loading information...</p>
+          <p className="text-gray-400">{t('blog.loadingInformation')}</p>
         </div>
       </div>
     )
@@ -87,11 +89,11 @@ export const Blog: React.FC = () => {
             <Info className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-            KGR Information
+            {t('blog.title')}
           </h1>
         </div>
         <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-          Stay updated with the latest gaming news, reviews, and insights from our community.
+          {t('blog.subtitle')}
         </p>
       </div>
 
@@ -103,7 +105,7 @@ export const Blog: React.FC = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search information..."
+            placeholder={t('blog.searchInformation')}
             className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
           />
         </div>
@@ -143,7 +145,7 @@ export const Blog: React.FC = () => {
                   to={`/blog/${post.slug}`}
                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-200 group-hover:shadow-lg group-hover:shadow-purple-500/25"
                 >
-                  <span>Read More</span>
+                  <span>{t('blog.readMore')}</span>
                   <Eye className="w-4 h-4 ml-2" />
                 </Link>
               </div>
@@ -154,12 +156,12 @@ export const Blog: React.FC = () => {
         <div className="text-center py-16">
           <Info className="w-16 h-16 text-gray-600 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-400 mb-2">
-            {posts.length === 0 ? 'No information yet' : 'No posts found'}
+            {posts.length === 0 ? t('blog.noInformationYet') : t('blog.noPostsFound')}
           </h3>
           <p className="text-gray-500">
             {posts.length === 0 
-              ? "Stay tuned for exciting gaming content coming soon!" 
-              : "Try a different search term to find more posts."
+              ? t('blog.stayTuned')
+              : t('blog.tryDifferentSearch')
             }
           </p>
         </div>

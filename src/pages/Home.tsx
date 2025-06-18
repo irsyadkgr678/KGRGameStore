@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
+import { useLanguage } from '../contexts/LanguageContext'
 import { GameCard } from '../components/GameCard'
 import { GameFilters } from '../components/GameFilters'
 import { Loader2, Gamepad2, Sparkles, Filter, ChevronDown, ChevronUp } from 'lucide-react'
@@ -19,6 +20,7 @@ interface Game {
 }
 
 export const Home: React.FC = () => {
+  const { t } = useLanguage()
   const [games, setGames] = useState<Game[]>([])
   const [filteredGames, setFilteredGames] = useState<Game[]>([])
   const [loading, setLoading] = useState(true)
@@ -104,7 +106,7 @@ export const Home: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-purple-500 animate-spin mx-auto mb-4" />
-          <p className="text-gray-400">Loading games...</p>
+          <p className="text-gray-400">{t('common.loading')}</p>
         </div>
       </div>
     )
@@ -119,12 +121,11 @@ export const Home: React.FC = () => {
             <Gamepad2 className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-            KGR GameStore
+            {t('home.title')}
           </h1>
         </div>
         <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-          Discover amazing games at incredible prices. From indie gems to AAA blockbusters, 
-          find your next gaming adventure here.
+          {t('home.subtitle')}
         </p>
       </div>
 
@@ -132,11 +133,11 @@ export const Home: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center space-x-4">
           <h2 className="text-2xl font-semibold text-white">
-            Browse Games {filteredGames.length !== games.length && `(${filteredGames.length})`}
+            {t('home.browseGames')} {filteredGames.length !== games.length && `(${filteredGames.length})`}
           </h2>
           {hasActiveFilters && (
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-600/20 text-purple-300 border border-purple-500/30">
-              Filters Active
+              {t('home.filtersActive')}
             </span>
           )}
         </div>
@@ -145,7 +146,7 @@ export const Home: React.FC = () => {
           className="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-lg font-medium text-gray-300 hover:text-white transition-all duration-200 border border-gray-700/50 hover:border-purple-500/50"
         >
           <Filter className="w-4 h-4" />
-          <span>{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
+          <span>{showFilters ? t('home.hideFilters') : t('home.showFilters')}</span>
           {showFilters ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </button>
       </div>
@@ -180,11 +181,11 @@ export const Home: React.FC = () => {
           <div className="mb-4">
             <Sparkles className="w-16 h-16 text-gray-600 mx-auto" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-400 mb-2">No games found</h3>
+          <h3 className="text-xl font-semibold text-gray-400 mb-2">{t('home.noGamesFound')}</h3>
           <p className="text-gray-500 mb-4">
             {games.length === 0 
-              ? "No games available yet. Check back soon!" 
-              : "Try adjusting your filters to find more games."
+              ? t('home.noGamesAvailable')
+              : t('home.adjustFilters')
             }
           </p>
           {hasActiveFilters && (
@@ -196,7 +197,7 @@ export const Home: React.FC = () => {
               }}
               className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium text-white transition-colors duration-200"
             >
-              Clear All Filters
+              {t('home.clearAllFilters')}
             </button>
           )}
         </div>

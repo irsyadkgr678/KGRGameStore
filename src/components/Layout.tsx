@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { useLanguage } from '../contexts/LanguageContext'
+import { LanguageSelector } from './LanguageSelector'
 import { 
   Gamepad2, 
   Info, 
@@ -18,6 +20,7 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { user, profile, signOut, isAdmin } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
@@ -28,8 +31,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   }
 
   const navigation = [
-    { name: 'Games', href: '/', icon: Gamepad2 },
-    { name: 'Information', href: '/blog', icon: Info },
+    { name: t('nav.games'), href: '/', icon: Gamepad2 },
+    { name: t('nav.information'), href: '/blog', icon: Info },
   ]
 
   const isActive = (path: string) => {
@@ -76,6 +79,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
 
             <div className="flex items-center space-x-4">
+              {/* Language Selector */}
+              <LanguageSelector />
+
               {user ? (
                 <div className="flex items-center space-x-3">
                   <span className="text-gray-300 text-sm hidden sm:block">
@@ -88,7 +94,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                       className="flex items-center space-x-1 px-3 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium text-white transition-colors duration-200"
                     >
                       <Settings className="w-4 h-4" />
-                      <span className="hidden sm:block">Admin</span>
+                      <span className="hidden sm:block">{t('nav.admin')}</span>
                     </Link>
                   )}
 
@@ -97,7 +103,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     className="flex items-center space-x-1 px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium text-gray-200 transition-colors duration-200"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span className="hidden sm:block">Sign Out</span>
+                    <span className="hidden sm:block">{t('nav.signOut')}</span>
                   </button>
                 </div>
               ) : (
@@ -106,13 +112,13 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     to="/login"
                     className="px-4 py-2 text-gray-300 hover:text-white font-medium transition-colors duration-200"
                   >
-                    Login
+                    {t('nav.login')}
                   </Link>
                   <Link
                     to="/register"
                     className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg font-medium text-white transition-all duration-200"
                   >
-                    Register
+                    {t('nav.register')}
                   </Link>
                 </div>
               )}
@@ -163,8 +169,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <footer className="bg-gray-900/50 backdrop-blur-md border-t border-purple-500/20 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-gray-400">
-            <p className="mb-2">© 2025 KGR GameStore. All rights reserved.</p>
-            <p className="text-sm">Contact us via WhatsApp: 08972190700 | Instagram: @irsyad.kgr</p>
+            <p className="mb-2">© 2025 KGR GameStore. {t('footer.allRightsReserved')}</p>
+            <p className="text-sm">{t('footer.contactWhatsApp')} | {t('footer.instagram')}</p>
           </div>
         </div>
       </footer>

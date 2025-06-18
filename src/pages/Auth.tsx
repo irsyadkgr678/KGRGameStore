@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import { Loader2, Eye, EyeOff, User, Mail, Lock, Gamepad2 } from 'lucide-react'
 
 interface AuthPageProps {
@@ -8,6 +9,7 @@ interface AuthPageProps {
 }
 
 export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
+  const { t } = useLanguage()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
@@ -29,7 +31,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
       if (mode === 'register') {
         const { error } = await signUp(email, password, fullName)
         if (error) throw error
-        setSuccess('Account created successfully! You can now login.')
+        setSuccess(t('auth.accountCreatedSuccess'))
         // Auto redirect to login after successful registration
         setTimeout(() => {
           navigate('/login')
@@ -40,7 +42,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
         navigate('/')
       }
     } catch (error: any) {
-      setError(error.message || 'An error occurred')
+      setError(error.message || t('common.error'))
     } finally {
       setLoading(false)
     }
@@ -56,12 +58,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
             </div>
           </div>
           <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-            {mode === 'login' ? 'Welcome Back to KGR GameStore' : 'Join KGR GameStore'}
+            {mode === 'login' ? t('auth.welcomeBack') : t('auth.joinKGR')}
           </h2>
           <p className="mt-2 text-gray-400">
             {mode === 'login' 
-              ? 'Sign in to your account to continue'
-              : 'Join our gaming community today'
+              ? t('auth.signInToContinue')
+              : t('auth.joinCommunity')
             }
           </p>
         </div>
@@ -72,7 +74,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
               <div>
                 <label htmlFor="fullName" className="block text-sm font-medium text-gray-300 mb-2">
                   <User className="w-4 h-4 inline mr-2" />
-                  Full Name
+                  {t('auth.fullName')}
                 </label>
                 <input
                   id="fullName"
@@ -81,7 +83,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                  placeholder="Enter your full name"
+                  placeholder={t('auth.enterFullName')}
                 />
               </div>
             )}
@@ -89,7 +91,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
                 <Mail className="w-4 h-4 inline mr-2" />
-                Email Address
+                {t('auth.emailAddress')}
               </label>
               <input
                 id="email"
@@ -98,14 +100,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                placeholder="Enter your email"
+                placeholder={t('auth.enterEmail')}
               />
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
                 <Lock className="w-4 h-4 inline mr-2" />
-                Password
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <input
@@ -115,7 +117,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 pr-12"
-                  placeholder="Enter your password"
+                  placeholder={t('auth.enterPassword')}
                   minLength={6}
                 />
                 <button
@@ -148,22 +150,22 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Please wait...</span>
+                  <span>{t('auth.pleaseWait')}</span>
                 </>
               ) : (
-                <span>{mode === 'login' ? 'Sign In' : 'Create Account'}</span>
+                <span>{mode === 'login' ? t('auth.signIn') : t('auth.createAccount')}</span>
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-gray-400">
-              {mode === 'login' ? "Don't have an account? " : "Already have an account? "}
+              {mode === 'login' ? t('auth.dontHaveAccount') : t('auth.alreadyHaveAccount')}
               <Link
                 to={mode === 'login' ? '/register' : '/login'}
                 className="text-purple-400 hover:text-purple-300 font-medium transition-colors duration-200"
               >
-                {mode === 'login' ? 'Sign up' : 'Sign in'}
+                {mode === 'login' ? t('auth.signUp') : t('auth.signIn')}
               </Link>
             </p>
           </div>

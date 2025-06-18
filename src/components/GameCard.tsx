@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../contexts/LanguageContext'
 import { Tag, Star } from 'lucide-react'
 
 interface Game {
@@ -19,6 +20,8 @@ interface GameCardProps {
 }
 
 export const GameCard: React.FC<GameCardProps> = ({ game }) => {
+  const { t } = useLanguage()
+
   const calculateFinalPrice = () => {
     if (game.is_free) return 0
     
@@ -76,7 +79,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
           {game.is_free && (
             <div className="absolute top-3 right-3">
               <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-green-500 text-white">
-                FREE
+                {t('game.free')}
               </span>
             </div>
           )}
@@ -96,7 +99,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
           <div className="flex items-center justify-between">
             <div className="flex flex-col">
               {game.is_free ? (
-                <span className="text-2xl font-bold text-green-400">FREE</span>
+                <span className="text-2xl font-bold text-green-400">{t('game.free')}</span>
               ) : (
                 <>
                   <span className="text-2xl font-bold text-white">
