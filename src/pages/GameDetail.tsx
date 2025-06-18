@@ -21,7 +21,9 @@ import {
   HardDrive,
   Cpu,
   MemoryStick,
-  Settings
+  Settings,
+  X,
+  Check
 } from 'lucide-react'
 
 interface Game {
@@ -53,6 +55,8 @@ export const GameDetail: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [showTrailer, setShowTrailer] = useState(false)
+  const [showPlatformModal, setShowPlatformModal] = useState(false)
+  const [selectedPlatform, setSelectedPlatform] = useState<string>('')
 
   useEffect(() => {
     if (id) {
@@ -93,11 +97,25 @@ export const GameDetail: React.FC = () => {
     return finalPrice
   }
 
-  const handlePurchase = () => {
+  const handleBuyClick = () => {
+    if (!game) return
+    
+    const platforms = game.platforms || ['PC']
+    if (platforms.length === 1) {
+      // If only one platform, proceed directly
+      setSelectedPlatform(platforms[0])
+      handlePurchase(platforms[0])
+    } else {
+      // Show platform selection modal
+      setShowPlatformModal(true)
+    }
+  }
+
+  const handlePurchase = (platform: string) => {
     if (!game) return
     
     const finalPrice = calculateFinalPrice()
-    const message = `Hi! I'm interested in purchasing "${game.title}" for ${game.is_free ? 'FREE' : `Rp ${finalPrice.toLocaleString('id-ID')}`}. Can you help me with the purchase process?`
+    const message = `Hi! I'm interested in purchasing "${game.title}" for ${platform} platform at ${game.is_free ? 'FREE' : `Rp ${finalPrice.toLocaleString('id-ID')}`}. Can you help me with the purchase process?`
     
     // WhatsApp link
     const whatsappUrl = `https://wa.me/6208972190700?text=${encodeURIComponent(message)}`
@@ -109,6 +127,8 @@ export const GameDetail: React.FC = () => {
     setTimeout(() => {
       window.open('https://www.instagram.com/irsyad.kgr/', '_blank')
     }, 1000)
+    
+    setShowPlatformModal(false)
   }
 
   const extractYouTubeId = (url: string) => {
@@ -120,6 +140,21 @@ export const GameDetail: React.FC = () => {
   const getYouTubeEmbedUrl = (url: string) => {
     const videoId = extractYouTubeId(url)
     return videoId ? `https://www.youtube.com/embed/${videoId}` : url
+  }
+
+  const getPlatformIcon = (platform: string) => {
+    switch (platform) {
+      case 'PC':
+        return <Monitor className="w-4 h-4" />
+      case 'PS4':
+      case 'PS5':
+        return <Gamepad2 className="w-4 h-4" />
+      case 'Xbox One':
+      case 'Xbox Series S/X':
+        return <Gamepad2 className="w-4 h-4" />
+      default:
+        return <Gamepad2 className="w-4 h-4" />
+    }
   }
 
   if (loading) {
@@ -166,6 +201,60 @@ export const GameDetail: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-8">
+      {/* Platform Selection Modal */}
+      {showPlatformModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md border border-gray-700/50 animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold text-white">
+                Choose Platform
+              </h3>
+              <button
+                onClick={() => setShowPlatformModal(false)}
+                className="p-2 text-gray-400 hover:text-white transition-colors duration-200 hover:bg-gray-700/50 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3 mb-6">
+              <p className="text-gray-300 text-sm">
+                Select the platform you want to purchase this game for:
+              </p>
+
+              <div className="space-y-2">
+                {platforms.map((platform) => (
+                  <button
+                    key={platform}
+                    onClick={() => {
+                      setSelectedPlatform(platform)
+                      handlePurchase(platform)
+                    }}
+                    className="w-full flex items-center justify-between p-4 bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 hover:border-purple-500/50 rounded-lg transition-all duration-200 group"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="text-purple-400 group-hover:text-purple-300">
+                        {getPlatformIcon(platform)}
+                      </div>
+                      <span className="font-medium text-white">{platform}</span>
+                    </div>
+                    <div className="text-gray-400 group-hover:text-purple-300">
+                      <ShoppingCart className="w-4 h-4" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-center">
+              <p className="text-xs text-gray-500">
+                You'll be redirected to WhatsApp to complete your purchase
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Back Button */}
       <div className="mb-4 sm:mb-6">
         <Link
@@ -305,8 +394,8 @@ export const GameDetail: React.FC = () => {
             <div className="flex flex-wrap gap-1 sm:gap-2">
               {platforms.map((platform) => (
                 <span key={platform} className="inline-flex items-center px-2 sm:px-3 py-1 sm:py-2 rounded-lg text-xs sm:text-sm font-medium bg-blue-600/20 text-blue-300 border border-blue-500/30">
-                  <Gamepad2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                  {platform}
+                  {getPlatformIcon(platform)}
+                  <span className="ml-1 sm:ml-2">{platform}</span>
                 </span>
               ))}
             </div>
@@ -332,12 +421,18 @@ export const GameDetail: React.FC = () => {
             </div>
             
             <button
-              onClick={handlePurchase}
+              onClick={handleBuyClick}
               className="w-full flex items-center justify-center space-x-2 px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/25 text-base sm:text-lg"
             >
               <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span>Buy</span>
+              <span>Buy Now</span>
             </button>
+            
+            {platforms.length > 1 && (
+              <p className="text-xs text-gray-400 text-center mt-2">
+                Choose your platform in the next step
+              </p>
+            )}
           </div>
         </div>
       </div>
