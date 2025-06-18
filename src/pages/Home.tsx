@@ -143,7 +143,7 @@ export const Home: React.FC = () => {
         <div className="flex items-center justify-center mb-3 sm:mb-4">
           <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 sm:p-3 rounded-full mr-2 sm:mr-4">
             <img 
-              src="/kgr logo copy copy.png" 
+              src="/kgr logo copy copy copy copy.png" 
               alt="KGR GameStore Logo" 
               className="w-5 h-5 sm:w-8 sm:h-8 object-contain"
               onError={(e) => {

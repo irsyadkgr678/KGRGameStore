@@ -86,7 +86,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
           <div className="flex items-center justify-center mb-4 sm:mb-6">
             <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 sm:p-3 rounded-full">
               <img 
-                src="/kgr logo copy copy.png" 
+                src="/kgr logo copy copy copy copy.png" 
                 alt="KGR GameStore Logo" 
                 className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
                 onError={(e) => {

@@ -52,7 +52,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link to="/" className="flex items-center space-x-1 sm:space-x-2 group">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-200 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center p-1">
                   <img 
-                    src="/kgr logo copy copy.png" 
+                    src="/kgr logo copy copy copy copy.png" 
                     alt="KGR GameStore Logo" 
                     className="w-full h-full object-contain"
                     onError={(e) => {
@@ -186,7 +186,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="text-center text-gray-400">
             <div className="flex items-center justify-center mb-4">
               <img 
-                src="/kgr logo copy copy.png" 
+                src="/kgr logo copy copy copy copy.png" 
                 alt="KGR GameStore Logo" 
                 className="w-8 h-8 sm:w-10 sm:h-10 object-contain mr-2"
                 onError={(e) => {
