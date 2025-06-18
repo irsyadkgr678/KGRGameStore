@@ -4,7 +4,6 @@ import { useAuth } from '../contexts/AuthContext'
 import { useLanguage } from '../contexts/LanguageContext'
 import { LanguageSelector } from './LanguageSelector'
 import { 
-  Gamepad2, 
   Info, 
   User, 
   Settings, 
@@ -32,8 +31,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   }
 
   const navigation = [
-    { name: t('nav.games'), href: '/', icon: Gamepad2 },
-    { name: t('nav.information'), href: '/blog', icon: Info },
+    { name: t('nav.games'), href: '/' },
+    { name: t('nav.information'), href: '/blog' },
   ]
 
   const isActive = (path: string) => {
@@ -50,8 +49,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="flex justify-between items-center h-14 sm:h-16">
             <div className="flex items-center space-x-2 sm:space-x-8">
               <Link to="/" className="flex items-center space-x-1 sm:space-x-2 group">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-1.5 sm:p-2 rounded-lg group-hover:from-purple-600 group-hover:to-pink-600 transition-all duration-200">
-                  <Gamepad2 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-200">
+                  <img 
+                    src="/kgr logo.png" 
+                    alt="KGR GameStore Logo" 
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <span className="text-sm sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                   KGR GameStore
@@ -59,23 +62,19 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               </Link>
 
               <nav className="hidden md:flex items-center space-x-6">
-                {navigation.map((item) => {
-                  const Icon = item.icon
-                  return (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
-                        isActive(item.href)
-                          ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30'
-                          : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span>{item.name}</span>
-                    </Link>
-                  )
-                })}
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={`flex items-center space-x-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
+                      isActive(item.href)
+                        ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30'
+                        : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
+                    }`}
+                  >
+                    <span>{item.name}</span>
+                  </Link>
+                ))}
               </nav>
             </div>
 
@@ -140,24 +139,20 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         {mobileMenuOpen && (
           <div className="md:hidden bg-gray-800/95 backdrop-blur-md border-t border-purple-500/20">
             <div className="px-3 sm:px-4 py-3 sm:py-4 space-y-2">
-              {navigation.map((item) => {
-                const Icon = item.icon
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center space-x-2 px-3 py-2.5 rounded-lg font-medium transition-colors duration-200 ${
-                      isActive(item.href)
-                        ? 'bg-purple-600/20 text-purple-300'
-                        : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{item.name}</span>
-                  </Link>
-                )
-              })}
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center space-x-2 px-3 py-2.5 rounded-lg font-medium transition-colors duration-200 ${
+                    isActive(item.href)
+                      ? 'bg-purple-600/20 text-purple-300'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+                  }`}
+                >
+                  <span>{item.name}</span>
+                </Link>
+              ))}
               
               {/* Language Selector in Mobile Menu */}
               <div className="pt-2 border-t border-gray-700/50">

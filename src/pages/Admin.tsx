@@ -55,6 +55,25 @@ interface BlogPost {
 }
 
 const AVAILABLE_PLATFORMS = ['PC', 'PS4', 'PS5']
+const AVAILABLE_GENRES = [
+  'Action',
+  'Adventure', 
+  'RPG',
+  'Strategy',
+  'Simulation',
+  'Sports',
+  'Racing',
+  'Puzzle',
+  'Horror',
+  'Platformer',
+  'Fighting',
+  'Shooter',
+  'Battle Royale',
+  'MMORPG',
+  'Indie',
+  'Arcade',
+  'Casual'
+]
 
 export const Admin: React.FC = () => {
   const { isAdmin, user } = useAuth()
@@ -458,13 +477,17 @@ export const Admin: React.FC = () => {
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">Genre</label>
-                        <input
-                          type="text"
+                        <select
                           required
                           value={gameForm.genre}
                           onChange={(e) => setGameForm({...gameForm, genre: e.target.value})}
                           className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        />
+                        >
+                          <option value="">Select Genre</option>
+                          {AVAILABLE_GENRES.map((genre) => (
+                            <option key={genre} value={genre}>{genre}</option>
+                          ))}
+                        </select>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">
