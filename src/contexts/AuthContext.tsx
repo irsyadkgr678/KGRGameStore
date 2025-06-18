@@ -52,10 +52,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session)
       setUser(session?.user ?? null)
       if (session?.user) {
+        // Check if email is confirmed
+        if (!session.user.email_confirmed_at) {
+          // Email not confirmed, sign out
+          await supabase.auth.signOut()
+          setProfile(null)
+          setLoading(false)
+          return
+        }
         fetchProfile(session.user.id)
       } else {
         setProfile(null)
@@ -74,10 +82,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .eq('id', userId)
         .single()
 
-      if (error) throw error
-      setProfile(data)
+      if (error) {
+        // If profile doesn't exist, it might be because email isn't confirmed yet
+        console.log('Profile not found, might need email confirmation')
+        setProfile(null)
+      } else {
+        setProfile(data)
+      }
     } catch (error) {
       console.error('Error fetching profile:', error)
+      setProfile(null)
     } finally {
       setLoading(false)
     }
@@ -102,6 +116,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email,
       password,
     })
+    
+    // Check if email is confirmed
+    if (data.user && !data.user.email_confirmed_at) {
+      // Sign out immediately if email not confirmed
+      await supabase.auth.signOut()
+      return { 
+        data: null, 
+        error: { message: 'Email not confirmed. Please check your email and click the confirmation link.' }
+      }
+    }
+    
     return { data, error }
   }
 
