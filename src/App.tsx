@@ -5,6 +5,7 @@ import { LanguageProvider } from './contexts/LanguageContext'
 import { Layout } from './components/Layout'
 import { Home } from './pages/Home'
 import { AuthPage } from './pages/Auth'
+import { ResetPassword } from './pages/ResetPassword'
 import { Blog } from './pages/Blog'
 import { BlogDetail } from './pages/BlogDetail'
 import { Admin } from './pages/Admin'
@@ -21,6 +22,7 @@ function App() {
               <Route path="/games/:id" element={<GameDetail />} />
               <Route path="/login" element={<AuthPage mode="login" />} />
               <Route path="/register" element={<AuthPage mode="register" />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogDetail />} />
               <Route path="/admin" element={<Admin />} />
