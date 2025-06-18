@@ -50,9 +50,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="flex justify-between items-center h-14 sm:h-16">
             <div className="flex items-center space-x-2 sm:space-x-8">
               <Link to="/" className="flex items-center space-x-1 sm:space-x-2 group">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-200 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-200 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center p-1">
                   <img 
-                    src="/image copy.png" 
+                    src="/kgr logo copy copy.png" 
                     alt="KGR GameStore Logo" 
                     className="w-full h-full object-contain"
                     onError={(e) => {
@@ -184,6 +184,20 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <footer className="bg-gray-900/50 backdrop-blur-md border-t border-purple-500/20 mt-8 sm:mt-16">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8">
           <div className="text-center text-gray-400">
+            <div className="flex items-center justify-center mb-4">
+              <img 
+                src="/kgr logo copy copy.png" 
+                alt="KGR GameStore Logo" 
+                className="w-8 h-8 sm:w-10 sm:h-10 object-contain mr-2"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
+              <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                KGR GameStore
+              </span>
+            </div>
             <p className="mb-2 text-sm sm:text-base">© 2025 KGR GameStore. {t('footer.allRightsReserved')}</p>
             <p className="text-xs sm:text-sm">{t('footer.contactWhatsApp')} | {t('footer.instagram')}</p>
           </div>
