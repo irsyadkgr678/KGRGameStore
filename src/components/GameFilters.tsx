@@ -1,17 +1,20 @@
 import React from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
-import { Search, Filter, SortAsc, DollarSign } from 'lucide-react'
+import { Search, Filter, SortAsc, DollarSign, Monitor } from 'lucide-react'
 
 interface GameFiltersProps {
   searchTerm: string
   setSearchTerm: (term: string) => void
   selectedGenre: string
   setSelectedGenre: (genre: string) => void
+  selectedPlatform: string
+  setSelectedPlatform: (platform: string) => void
   sortOrder: 'asc' | 'desc'
   setSortOrder: (order: 'asc' | 'desc') => void
   priceRange: [number, number]
   setPriceRange: (range: [number, number]) => void
   genres: string[]
+  platforms: string[]
   maxPrice: number
 }
 
@@ -20,18 +23,21 @@ export const GameFilters: React.FC<GameFiltersProps> = ({
   setSearchTerm,
   selectedGenre,
   setSelectedGenre,
+  selectedPlatform,
+  setSelectedPlatform,
   sortOrder,
   setSortOrder,
   priceRange,
   setPriceRange,
   genres,
+  platforms,
   maxPrice
 }) => {
   const { t } = useLanguage()
 
   return (
     <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-3 sm:p-6 border border-gray-700/50 mb-6 sm:mb-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-6">
         {/* Search */}
         <div className="sm:col-span-2 lg:col-span-1">
           <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
@@ -62,6 +68,26 @@ export const GameFilters: React.FC<GameFiltersProps> = ({
             {genres.map((genre) => (
               <option key={genre} value={genre}>
                 {genre}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Platform Filter */}
+        <div>
+          <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
+            <Monitor className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1 sm:mr-2" />
+            Platform
+          </label>
+          <select
+            value={selectedPlatform}
+            onChange={(e) => setSelectedPlatform(e.target.value)}
+            className="w-full px-3 sm:px-4 py-2 sm:py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-sm"
+          >
+            <option value="">All Platforms</option>
+            {platforms.map((platform) => (
+              <option key={platform} value={platform}>
+                {platform}
               </option>
             ))}
           </select>
@@ -124,6 +150,17 @@ export const GameFilters: React.FC<GameFiltersProps> = ({
             {t('filters.genre')}: <span className="truncate max-w-16 ml-1">{selectedGenre}</span>
             <button
               onClick={() => setSelectedGenre('')}
+              className="ml-1 sm:ml-2 text-purple-400 hover:text-purple-200"
+            >
+              ×
+            </button>
+          </span>
+        )}
+        {selectedPlatform && (
+          <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-purple-600/20 text-purple-300 border border-purple-500/30">
+            Platform: <span className="truncate max-w-16 ml-1">{selectedPlatform}</span>
+            <button
+              onClick={() => setSelectedPlatform('')}
               className="ml-1 sm:ml-2 text-purple-400 hover:text-purple-200"
             >
               ×

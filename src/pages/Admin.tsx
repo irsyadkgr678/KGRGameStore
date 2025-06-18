@@ -54,7 +54,7 @@ interface BlogPost {
   author_id: string
 }
 
-const AVAILABLE_PLATFORMS = ['PC', 'PS4', 'PS5']
+const AVAILABLE_PLATFORMS = ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series S/X']
 const AVAILABLE_GENRES = [
   'Action',
   'Adventure', 
@@ -534,7 +534,7 @@ export const Admin: React.FC = () => {
                       <Monitor className="w-5 h-5 inline mr-2" />
                       Platforms
                     </h4>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                       {AVAILABLE_PLATFORMS.map((platform) => (
                         <label key={platform} className="flex items-center space-x-2 cursor-pointer">
                           <input
@@ -543,7 +543,7 @@ export const Admin: React.FC = () => {
                             onChange={() => handlePlatformToggle(platform)}
                             className="rounded border-gray-600 text-purple-600 focus:ring-purple-500"
                           />
-                          <span className="text-gray-300 font-medium">{platform}</span>
+                          <span className="text-gray-300 font-medium text-sm">{platform}</span>
                         </label>
                       ))}
                     </div>

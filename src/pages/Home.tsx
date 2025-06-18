@@ -15,6 +15,7 @@ interface Game {
   is_free: boolean
   genre: string
   image_url: string | null
+  platforms: string[] | null
   created_at: string
   updated_at: string
 }
@@ -27,10 +28,12 @@ export const Home: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedGenre, setSelectedGenre] = useState('')
+  const [selectedPlatform, setSelectedPlatform] = useState('')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000])
 
   const genres = [...new Set(games.map(game => game.genre))].sort()
+  const platforms = [...new Set(games.flatMap(game => game.platforms || ['PC']))].sort()
   const maxPrice = Math.max(...games.map(game => game.price), 1000000)
 
   useEffect(() => {
@@ -39,7 +42,7 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     filterAndSortGames()
-  }, [games, searchTerm, selectedGenre, sortOrder, priceRange])
+  }, [games, searchTerm, selectedGenre, selectedPlatform, sortOrder, priceRange])
 
   const fetchGames = async () => {
     try {
@@ -73,6 +76,13 @@ export const Home: React.FC = () => {
       filtered = filtered.filter(game => game.genre === selectedGenre)
     }
 
+    // Platform filter
+    if (selectedPlatform) {
+      filtered = filtered.filter(game => 
+        game.platforms && game.platforms.includes(selectedPlatform)
+      )
+    }
+
     // Price filter
     filtered = filtered.filter(game => {
       if (game.is_free) return true
@@ -99,7 +109,7 @@ export const Home: React.FC = () => {
     setFilteredGames(filtered)
   }
 
-  const hasActiveFilters = searchTerm || selectedGenre || priceRange[1] < maxPrice
+  const hasActiveFilters = searchTerm || selectedGenre || selectedPlatform || priceRange[1] < maxPrice
 
   if (loading) {
     return (
@@ -159,11 +169,14 @@ export const Home: React.FC = () => {
             setSearchTerm={setSearchTerm}
             selectedGenre={selectedGenre}
             setSelectedGenre={setSelectedGenre}
+            selectedPlatform={selectedPlatform}
+            setSelectedPlatform={setSelectedPlatform}
             sortOrder={sortOrder}
             setSortOrder={setSortOrder}
             priceRange={priceRange}
             setPriceRange={setPriceRange}
             genres={genres}
+            platforms={platforms}
             maxPrice={maxPrice}
           />
         </div>
@@ -193,6 +206,7 @@ export const Home: React.FC = () => {
               onClick={() => {
                 setSearchTerm('')
                 setSelectedGenre('')
+                setSelectedPlatform('')
                 setPriceRange([0, maxPrice])
               }}
               className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium text-white transition-colors duration-200 text-sm sm:text-base"
