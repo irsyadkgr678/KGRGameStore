@@ -84,18 +84,18 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
       <div className="max-w-md w-full space-y-6 sm:space-y-8">
         <div className="text-center">
           <div className="flex items-center justify-center mb-4 sm:mb-6">
-            <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 sm:p-3 rounded-full">
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-2 sm:p-3 rounded-full opacity-90 hover:opacity-100 transition-opacity duration-200">
               <img 
                 src="/kgr logo copy copy copy copy.png" 
                 alt="KGR GameStore Logo" 
-                className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
+                className="w-6 h-6 sm:w-8 sm:h-8 object-contain opacity-90 hover:opacity-100 transition-opacity duration-200"
                 onError={(e) => {
                   // Fallback to gamepad icon if image fails to load
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
                   const parent = target.parentElement;
                   if (parent) {
-                    parent.innerHTML = '<svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                    parent.innerHTML = '<svg class="w-6 h-6 sm:w-8 sm:h-8 text-white opacity-90 hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
                   }
                 }}
               />

@@ -73,7 +73,21 @@ export const Blog: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Info className="w-12 h-12 text-purple-500 animate-pulse mx-auto mb-4" />
+          <div className="mb-4 opacity-80 hover:opacity-100 transition-opacity duration-200">
+            <img 
+              src="/kgr logo copy copy copy copy.png" 
+              alt="KGR GameStore Logo" 
+              className="w-12 h-12 object-contain mx-auto opacity-70 animate-pulse"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = '<div class="w-12 h-12 mx-auto"><svg class="w-full h-full text-purple-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>';
+                }
+              }}
+            />
+          </div>
           <p className="text-gray-400">{t('blog.loadingInformation')}</p>
         </div>
       </div>
@@ -85,8 +99,20 @@ export const Blog: React.FC = () => {
       {/* Header */}
       <div className="text-center mb-12">
         <div className="flex items-center justify-center mb-4">
-          <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full mr-4">
-            <Info className="w-8 h-8 text-white" />
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full mr-4 opacity-90 hover:opacity-100 transition-opacity duration-200">
+            <img 
+              src="/kgr logo copy copy copy copy.png" 
+              alt="KGR GameStore Logo" 
+              className="w-8 h-8 object-contain opacity-90 hover:opacity-100 transition-opacity duration-200"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = '<svg class="w-8 h-8 text-white opacity-90 hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                }
+              }}
+            />
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
             {t('blog.title')}
@@ -154,7 +180,21 @@ export const Blog: React.FC = () => {
         </div>
       ) : (
         <div className="text-center py-16">
-          <Info className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+          <div className="mb-4 opacity-80 hover:opacity-100 transition-opacity duration-200">
+            <img 
+              src="/kgr logo copy copy copy copy.png" 
+              alt="KGR GameStore Logo" 
+              className="w-16 h-16 object-contain mx-auto opacity-60"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = '<div class="w-16 h-16 mx-auto"><svg class="w-full h-full text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>';
+                }
+              }}
+            />
+          </div>
           <h3 className="text-xl font-semibold text-gray-400 mb-2">
             {posts.length === 0 ? t('blog.noInformationYet') : t('blog.noPostsFound')}
           </h3>

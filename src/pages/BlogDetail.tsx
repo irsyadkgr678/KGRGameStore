@@ -99,7 +99,21 @@ export const BlogDetail: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center">
-          <Info className="w-12 h-12 sm:w-16 sm:h-16 text-gray-600 mx-auto mb-4" />
+          <div className="mb-4 opacity-80 hover:opacity-100 transition-opacity duration-200">
+            <img 
+              src="/kgr logo copy copy copy copy.png" 
+              alt="KGR GameStore Logo" 
+              className="w-12 h-12 sm:w-16 sm:h-16 object-contain mx-auto opacity-70"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.innerHTML = '<div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto"><svg class="w-full h-full text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>';
+                }
+              }}
+            />
+          </div>
           <h2 className="text-xl sm:text-2xl font-bold text-gray-400 mb-2">
             {error === 'Post not found' ? 'Informasi Tidak Ditemukan' : 'Terjadi Kesalahan'}
           </h2>
@@ -195,9 +209,20 @@ export const BlogDetail: React.FC = () => {
       {/* Related or Back to Blog */}
       <div className="mt-6 sm:mt-8 text-center">
         <div className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-gray-700/50">
-          <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3">
-            Butuh Informasi Lainnya?
-          </h3>
+          <div className="flex items-center justify-center mb-3">
+            <img 
+              src="/kgr logo copy copy copy copy.png" 
+              alt="KGR GameStore Logo" 
+              className="w-8 h-8 sm:w-10 sm:h-10 object-contain mr-2 opacity-70 hover:opacity-90 transition-opacity duration-200"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
+            />
+            <h3 className="text-lg sm:text-xl font-semibold text-white">
+              Butuh Informasi Lainnya?
+            </h3>
+          </div>
           <p className="text-gray-300 text-sm sm:text-base mb-4">
             Kembali ke halaman informasi untuk melihat artikel dan berita terbaru lainnya.
           </p>

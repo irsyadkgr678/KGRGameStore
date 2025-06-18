@@ -54,14 +54,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <img 
                     src="/kgr logo copy copy copy copy.png" 
                     alt="KGR GameStore Logo" 
-                    className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-200"
+                    className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-200"
                     onError={(e) => {
                       // Fallback to gamepad icon if image fails to load
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
                       const parent = target.parentElement;
                       if (parent) {
-                        parent.innerHTML = '<div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>';
+                        parent.innerHTML = '<div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity duration-200"><svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>';
                       }
                     }}
                   />
@@ -188,7 +188,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <img 
                 src="/kgr logo copy copy copy copy.png" 
                 alt="KGR GameStore Logo" 
-                className="w-8 h-8 sm:w-10 sm:h-10 object-contain mr-2 opacity-80"
+                className="w-8 h-8 sm:w-10 sm:h-10 object-contain mr-2 opacity-70 hover:opacity-90 transition-opacity duration-200"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
